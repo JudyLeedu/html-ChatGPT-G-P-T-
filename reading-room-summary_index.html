@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading Room · ChatGPT 中 G、P、T 分别是什么意思？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+SC:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --canvas: #F6EBD8;
+  --ink: #0B0A09;
+  --lilac: #D6C7CC;
+  --terracotta: #DE916A;
+  --butter: #F1DAB1;
+  --border: 2.5px solid #0B0A09;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: 'Inter', 'Noto Serif SC', serif;
+  line-height: 1.7;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.page-frame {
+  max-width: 900px;
+  margin: 0 auto;
+  border: var(--border);
+  background: var(--canvas);
+  position: relative;
+}
+
+/* ─── HEADER ─── */
+.header {
+  padding: 60px 48px 40px;
+  border-bottom: var(--border);
+  text-align: center;
+}
+
+.header-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.header-meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0.6;
+}
+
+/* ─── SECTION TITLES ─── */
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 48px;
+  border-bottom: var(--border);
+  background: var(--lilac);
+}
+
+/* ─── OVERVIEW ─── */
+.overview {
+  padding: 40px 48px;
+  border-bottom: var(--border);
+}
+
+.overview p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  line-height: 2;
+  max-width: 720px;
+}
+
+/* ─── LEARN SECTION ─── */
+.learn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: var(--border);
+}
+
+@media (max-width: 640px) {
+  .learn-grid { grid-template-columns: 1fr; }
+}
+
+.learn-item {
+  border-right: var(--border);
+  border-bottom: var(--border);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.learn-item:nth-child(2n) { border-right: none; }
+.learn-item:last-child { border-bottom: none; }
+@media (max-width: 640px) {
+  .learn-item { border-right: none; }
+  .learn-item:last-child { border-bottom: none; }
+}
+
+.learn-item:hover {
+  background: var(--butter);
+}
+
+.learn-item-header {
+  padding: 32px 32px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.learn-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--terracotta);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.learn-label {
+  flex: 1;
+}
+
+.learn-label h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.learn-label .subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  opacity: 0.5;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.learn-toggle {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.learn-item.open .learn-toggle {
+  background: var(--ink);
+  transform: rotate(45deg);
+}
+
+.learn-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: stroke 0.3s ease;
+}
+
+.learn-item.open .learn-toggle svg {
+  stroke: var(--canvas);
+}
+
+/* ─── DRAWER ─── */
+.drawer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-inner {
+  padding: 0 32px 32px;
+  border-top: 1.5px dashed var(--ink);
+  margin: 0 16px;
+  padding-top: 24px;
+}
+
+.drawer-inner ul {
+  list-style: none;
+  padding: 0;
+}
+
+.drawer-inner ul li {
+  font-family: 'Inter', 'Noto Serif SC', serif;
+  font-size: 14px;
+  line-height: 1.8;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.drawer-inner ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--terracotta);
+}
+
+.drawer-inner .insight {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink);
+  opacity: 0.7;
+  margin-top: 16px;
+  padding-left: 16px;
+  border-left: 3px solid var(--terracotta);
+}
+
+/* ─── HIGHLIGHTS ─── */
+.highlights {
+  padding: 40px 48px;
+}
+
+.highlight-card {
+  background: var(--butter);
+  border: var(--border);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.highlight-card:last-child { margin-bottom: 0; }
+
+.highlight-card::before {
+  content: attr(data-icon);
+  font-size: 20px;
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  background: var(--canvas);
+  padding: 0 8px;
+}
+
+.highlight-card h4 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.highlight-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: var(--border);
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+/* ─── MICRO ANIMATION ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-frame > * {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.page-frame > *:nth-child(1) { animation-delay: 0.1s; }
+.page-frame > *:nth-child(2) { animation-delay: 0.2s; }
+.page-frame > *:nth-child(3) { animation-delay: 0.3s; }
+.page-frame > *:nth-child(4) { animation-delay: 0.4s; }
+.page-frame > *:nth-child(5) { animation-delay: 0.5s; }
+.page-frame > *:nth-child(6) { animation-delay: 0.6s; }
+.page-frame > *:nth-child(7) { animation-delay: 0.7s; }
+</style>
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Reading Room · Article Summary</div>
+    <h1>ChatGPT 中<br>G、P、T 分别是什么意思？</h1>
+    <div class="header-meta">作者：王建硕 · 微信公众号</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section-title">OVERVIEW · 概览</div>
+  <div class="overview">
+    <p>这篇文章深入浅出地拆解了 ChatGPT 这个名字背后的技术含义。GPT 代表 <strong>Generative Pre-Training Transformer</strong>（生成式预训练转换器），作者用生动的比喻逐一解释了这三个词各自的技术内涵，并最终解释了为什么在 GPT 前面加了一个 Chat。这是一篇难得的、用通俗语言精确传达 AI 核心概念的科普佳作。</p>
+  </div>
+
+  <!-- WHAT YOU WILL LEARN -->
+  <div class="section-title">WHAT YOU'LL LEARN · 你将了解什么</div>
+  <div class="learn-grid">
+
+    <!-- Item 1: G -->
+    <div class="learn-item" onclick="toggleDrawer(this)">
+      <div class="learn-item-header">
+        <div class="learn-num">G</div>
+        <div class="learn-label">
+          <h3>Generative 生成式</h3>
+          <div class="subtitle">预测下一个字的"顺口溜"</div>
+        </div>
+        <div class="learn-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke="#0B0A09" stroke-width="2">
+            <line x1="7" y1="2" x2="7" y2="12"/>
+            <line x1="2" y1="7" x2="12" y2="7"/>
+          </svg>
+        </div>
+      </div>
+      <div class="drawer">
+        <div class="drawer-inner">
+          <ul>
+            <li>AI 有多种类型：识别类（人脸识别、语音识别）vs 生成类</li>
+            <li>生成类分支：GAN（DALL-E）、Diffusion（Stable Diffusion / MidJourney）、Transformer（ChatGPT）</li>
+            <li>核心原理是「顺口溜」—— 看了大量文本后发现反复出现的语言模式，然后按模式补全</li>
+            <li>它不是真正"理解"内容，而是学会了文字的韵律和搭配</li>
+            <li>乘法计算出错就是证据：答案的末尾 2 对了，只因为"7 × 6 = 2 结尾"在语料里押韵</li>
+          </ul>
+          <div class="insight">「它之所以可以准确填补"锄禾日当__"的空格，不是因为它重构了农民劳动的场景，仅仅是顺口溜出来的。」</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 2: P -->
+    <div class="learn-item" onclick="toggleDrawer(this)">
+      <div class="learn-item-header">
+        <div class="learn-num">P</div>
+        <div class="learn-label">
+          <h3>Pre-Training 预训练</h3>
+          <div class="subtitle">一个预先训练好的通用基础</div>
+        </div>
+        <div class="learn-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke="#0B0A09" stroke-width="2">
+            <line x1="7" y1="2" x2="7" y2="12"/>
+            <line x1="2" y1="7" x2="12" y2="7"/>
+          </svg>
+        </div>
+      </div>
+      <div class="drawer">
+        <div class="drawer-inner">
+          <ul>
+            <li>传统模型为单一目标训练（如判断图片有没有猫），属于专用模型</li>
+            <li>Pre-Training 模型预先训练一个通用模型，再通过微调（Fine-Tuning）适配特定任务</li>
+            <li>好比请了个阿姨：劳务公司预训练了家务知识，小学老师预训练了中文对话，到你家只需微调</li>
+            <li>ChatGPT 的语言通畅是预训练的产物；回答内容则是需要 Fine-Tuning 的部分</li>
+          </ul>
+          <div class="insight">「这个模型里面语言是强项，它提供的内容无论多么胡说八道，至少行文通畅程度无可挑剔。」</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 3: T -->
+    <div class="learn-item" onclick="toggleDrawer(this)">
+      <div class="learn-item-header">
+        <div class="learn-num">T</div>
+        <div class="learn-label">
+          <h3>Transformer 转换器</h3>
+          <div class="subtitle">编码 → 转换 → 解码</div>
+        </div>
+        <div class="learn-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke="#0B0A09" stroke-width="2">
+            <line x1="7" y1="2" x2="7" y2="12"/>
+            <line x1="2" y1="7" x2="12" y2="7"/>
+          </svg>
+        </div>
+      </div>
+      <div class="drawer">
+        <div class="drawer-inner">
+          <ul>
+            <li>类似变电器：220V 进，12V 出。Transformer 把语言序列变成另一段语言序列</li>
+            <li>编码器将文本变成 1536 维浮点数向量（例如 "Apple" → 一组数字）</li>
+            <li>这组数字里，某些维度组合表达「甜」「圆」「红」等语义属性</li>
+            <li>解码器再把数字还原为目标语言：中文 → 苹果，西班牙语 → manzana，emoji → 🍎</li>
+            <li>ChatGPT 的核心就是这个序列到序列的转换，做得好到让人产生它有思想的错觉</li>
+          </ul>
+          <div class="insight">「核心上，它就是把一个语言序列转换为了另外一堆语言序列，这个任务完成得如此好，以至于让人产生了它有思想的错觉。」</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 4: Chat -->
+    <div class="learn-item" onclick="toggleDrawer(this)">
+      <div class="learn-item-header">
+        <div class="learn-num">+</div>
+        <div class="learn-label">
+          <h3>Chat 的由来</h3>
+          <div class="subtitle">从 GPT-3 到对话场景的进化</div>
+        </div>
+        <div class="learn-toggle">
+          <svg viewBox="0 0 14 14" fill="none" stroke="#0B0A09" stroke-width="2">
+            <line x1="7" y1="2" x2="7" y2="12"/>
+            <line x1="2" y1="7" x2="12" y2="7"/>
+          </svg>
+        </div>
+      </div>
+      <div class="drawer">
+        <div class="drawer-inner">
+          <ul>
+            <li>GPT 经历 GPT-1 → GPT-2（开源） → GPT-3（175B 参数大模型）</li>
+            <li>GPT-3 是生成式的 prompt→completion 模式，直接聊天体验不好</li>
+            <li>InstructGPT：在 GPT-3 基础上让模型听懂指令</li>
+            <li>ChatGPT：在 InstructGPT 之上，针对多轮对话和安全边界做了加强</li>
+            <li>严格意义上 ChatGPT 是 GPT-3 的一个 Fine-Tuning 产物</li>
+          </ul>
+          <div class="insight">「这是少有的几个准确描述了它是什么的名字——与 Web3 这个名字形成鲜明对比。」</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HIGHLIGHTS -->
+  <div class="section-title">HIGHLIGHTS · 亮点</div>
+  <div class="highlights">
+
+    <div class="highlight-card" data-icon="💡">
+      <h4>「顺口溜」比喻</h4>
+      <p>用「顺口溜」解释生成式 AI 的工作原理：不是理解意思，而是通过语感押韵来预测下一个字。把复杂的技术直觉化。</p>
+    </div>
+
+    <div class="highlight-card" data-icon="🧮">
+      <h4>乘法错误的精妙举证</h4>
+      <p>3457 × 43216 = ? ChatGPT 给了错误答案，但末位的 2 是对的——因为 7 × 6 = 42 在语料中「押韵」。完美证明了"语感 ≠ 计算"。</p>
+    </div>
+
+    <div class="highlight-card" data-icon="🏠">
+      <h4>「阿姨」类比 Pre-Training</h4>
+      <p>请阿姨不用从教汉语开始——劳务公司已经预训练好了。到你家只需 Fine-Tune 你家的特定规矩。把抽象概念嫁接到日常经验。</p>
+    </div>
+
+    <div class="highlight-card" data-icon="🍎">
+      <h4>Apple → 1536 个数字 → 苹果/🍎</h4>
+      <p>用一个 Apple 单词贯穿 Transformer 的完整流程：编码为 1536 维向量，再解码为不同语言输出。结合直觉构建了具象认知。</p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>READING ROOM STYLE</span>
+    <span>SOURCE: 微信公众号 · 王建硕</span>
+  </div>
+
+</div>
+
+<script>
+function toggleDrawer(item) {
+  const drawer = item.querySelector('.drawer');
+  const isOpen = item.classList.contains('open');
+  
+  // Close all other drawers
+  document.querySelectorAll('.learn-item.open').forEach(el => {
+    if (el !== item) {
+      el.classList.remove('open');
+      el.querySelector('.drawer').style.maxHeight = '0';
+    }
+  });
+
+  if (isOpen) {
+    item.classList.remove('open');
+    drawer.style.maxHeight = '0';
+  } else {
+    item.classList.add('open');
+    drawer.style.maxHeight = drawer.scrollHeight + 'px';
+  }
+}
+
+// Auto-open first item after load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const first = document.querySelector('.learn-item');
+    if (first) toggleDrawer(first);
+  }, 800);
+});
+</script>
+
+</body>
+</html>
